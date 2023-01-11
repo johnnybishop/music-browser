@@ -1,0 +1,19 @@
+Potrzebny jest zainstalowany python na kompie
+1) w terminal wpisujemy: 
+	pip install virtualenv 
+	(opcjonalnie: pip3 install virtualenv)
+2) w folderze z projektem otwieramy terminal i wpisujemy:
+	virtualenv venv
+3) gdy w folderze z projektem pojawi się nowy folder 'venv', wpisujemy:
+	venv\Scripts\activate
+   uruchomi to środowisko (gdy chcemy je wyłączyć wpisujemy: deactivate)
+4) instalujemy potrzebne do apki moduły:
+	pip install flask
+	pip install flask-restful
+	pip install flask_sqlalchemy
+	pip install psycopg2-binary
+5) po zainstalowaniu odpalamy oba mikroserisy komendami:
+	python tracksService.py
+	python playlistsService.py
+6) powinno działać 
+	

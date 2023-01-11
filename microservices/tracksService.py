@@ -47,7 +47,7 @@ class TracksEP(Resource):
     @marshal_with(trackFields)
     def get(self):
         all_tracks = Track.query.all()
-        return all_tracks
+        return all_tracks, 200
 
     # add new track
     @marshal_with(trackFields)
@@ -58,7 +58,7 @@ class TracksEP(Resource):
                       track_url=data['track_url'])
         db.session.add(track)
         db.session.commit()
-        return track
+        return track, 200
 
 
 class TrackEP(Resource):
@@ -66,7 +66,7 @@ class TrackEP(Resource):
     @marshal_with(trackFields)
     def get(self, video_id):
         track = Track.query.filter_by(id=video_id).first()
-        return track
+        return track, 200
 
     # update track with given id
     @marshal_with(trackFields)
@@ -77,7 +77,7 @@ class TrackEP(Resource):
         track.author = data['author']
         track.track_url = data['track_url']
         db.session.commit()
-        return track
+        return track, 200
 
     # delete track with given id
     @marshal_with(trackFields)
@@ -85,7 +85,7 @@ class TrackEP(Resource):
         track = Track.query.filter_by(id=video_id).first()
         db.session.delete(track)
         db.session.commit()
-        return track
+        return track, 200
 
 
 api.add_resource(TracksEP, '/tracks')
