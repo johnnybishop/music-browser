@@ -9,7 +9,7 @@ Potrzebny jest zainstalowany python na kompie
    uruchomi to środowisko (gdy chcemy je wyłączyć wpisujemy: deactivate)
 4) instalujemy potrzebne do apki moduły:
 	pip install flask
-	pip install flask-restful
+	pip install flask_restful
 	pip install flask_sqlalchemy
 	pip install psycopg2-binary
 5) po zainstalowaniu odpalamy oba mikroserisy komendami:
