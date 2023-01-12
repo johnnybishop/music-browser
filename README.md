@@ -5,7 +5,9 @@
 - python
 
 ## run database
-`docker-compose up -d`
+```bash
+docker-compose up -d
+```
 
 ## run python microservices
 ```python
