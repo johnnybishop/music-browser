@@ -1,6 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restful import Resource, Api, marshal_with, fields
 from flask_sqlalchemy import SQLAlchemy
+from flask import abort
+
 import os
 
 tracksService = Flask(__name__)
@@ -46,46 +48,71 @@ class TracksEP(Resource):
     # get all tracks
     @marshal_with(trackFields)
     def get(self):
-        all_tracks = Track.query.all()
-        return all_tracks, 200
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            all_tracks = Track.query.all()
+            return all_tracks
+        else:
+            return abort(400, 'Provide correct api key!')
 
     # add new track
     @marshal_with(trackFields)
     def post(self):
-        data = request.json
-        track = Track(title=data['title'],
-                      author=data['author'],
-                      track_url=data['track_url'])
-        db.session.add(track)
-        db.session.commit()
-        return track, 200
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            data = request.json
+            track = Track(title=data['title'],
+                          author=data['author'],
+                          track_url=data['track_url'])
+            db.session.add(track)
+            db.session.commit()
+            return track
+        else:
+            return abort(400, 'Provide correct api key!')
 
 
 class TrackEP(Resource):
     # get track with given id
     @marshal_with(trackFields)
     def get(self, video_id):
-        track = Track.query.filter_by(id=video_id).first()
-        return track, 200
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            track = Track.query.filter_by(id=video_id).first()
+            return track
+        else:
+            return abort(400, 'Provide correct api key!')
 
     # update track with given id
     @marshal_with(trackFields)
     def put(self, video_id):
-        data = request.json
-        track = Track.query.filter_by(id=video_id).first()
-        track.title = data['title']
-        track.author = data['author']
-        track.track_url = data['track_url']
-        db.session.commit()
-        return track, 200
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            data = request.json
+            track = Track.query.filter_by(id=video_id).first()
+            track.title = data['title']
+            track.author = data['author']
+            track.track_url = data['track_url']
+            db.session.commit()
+            return track
+        else:
+            return abort(400, 'Provide correct api key!')
 
     # delete track with given id
     @marshal_with(trackFields)
     def delete(self, video_id):
-        track = Track.query.filter_by(id=video_id).first()
-        db.session.delete(track)
-        db.session.commit()
-        return track, 200
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            track = Track.query.filter_by(id=video_id).first()
+            db.session.delete(track)
+            db.session.commit()
+            return track, 200
+        else:
+            return abort(400, 'Provide correct api key!')
 
 
 api.add_resource(TracksEP, '/tracks')

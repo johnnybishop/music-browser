@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_restful import Resource, Api, marshal_with, fields
 from flask_sqlalchemy import SQLAlchemy
+from flask import abort
 
 playlistsService = Flask(__name__)
 api = Api(playlistsService)
@@ -51,93 +52,148 @@ class PlaylistsEP(Resource):
     # get all playlists
     @marshal_with(playlistFields)
     def get(self):
-        playlists = Playlist.query.all()
-        return playlists
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            playlists = Playlist.query.all()
+            return playlists
+        else:
+            return abort(400, 'Provide correct api key!')
 
     # add new playlists
     @marshal_with(playlistFields)
     def post(self):
-        data = request.json
-        playlist = Playlist(title=data['title'])
-        db.session.add(playlist)
-        db.session.commit()
-        return playlist
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            data = request.json
+            playlist = Playlist(title=data['title'])
+            db.session.add(playlist)
+            db.session.commit()
+            return playlist
+        else:
+            return abort(400, 'Provide correct api key!')
 
 
 class PlaylistEP(Resource):
     # get playlist with given id
     @marshal_with(playlistFields)
     def get(self, playlist_id):
-        playlist = Playlist.query.filter_by(id=playlist_id).first()
-        return playlist
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            playlist = Playlist.query.filter_by(id=playlist_id).first()
+            return playlist
+        else:
+            return abort(400, 'Provide correct api key!')
 
     # update track with given id
     @marshal_with(playlistFields)
     def put(self, playlist_id):
-        data = request.json
-        playlist = Playlist.query.filter_by(id=playlist_id).first()
-        playlist.title = data['title']
-        db.session.commit()
-        return playlist
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            data = request.json
+            playlist = Playlist.query.filter_by(id=playlist_id).first()
+            playlist.title = data['title']
+            db.session.commit()
+            return playlist
+        else:
+            return abort(400, 'Provide correct api key!')
 
     # delete track with given id
     @marshal_with(playlistFields)
     def delete(self, playlist_id):
-        playlist = Playlist.query.filter_by(id=playlist_id).first()
-        db.session.delete(playlist)
-        db.session.commit()
-        return playlist
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            playlist = Playlist.query.filter_by(id=playlist_id).first()
+            db.session.delete(playlist)
+            db.session.commit()
+            return playlist
+        else:
+            return abort(400, 'Provide correct api key!')
 
 
 class TrackConnectionsEP(Resource):
     # get all playlists
     @marshal_with(trackConnectionFields)
     def get(self):
-        trackConnections = TrackConnection.query.all()
-        return trackConnections
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            trackConnections = TrackConnection.query.all()
+            return trackConnections
+        else:
+            return abort(400, 'Provide correct api key!')
 
     # add new playlists
     @marshal_with(trackConnectionFields)
     def post(self):
-        data = request.json
-        trackConnection = TrackConnection(track_id=data['track_id'],
-                                          playlist_id=data['playlist_id'])
-        db.session.add(trackConnection)
-        db.session.commit()
-        return trackConnection
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            data = request.json
+            trackConnection = TrackConnection(track_id=data['track_id'],
+                                              playlist_id=data['playlist_id'])
+            db.session.add(trackConnection)
+            db.session.commit()
+            return trackConnection
+        else:
+            return abort(400, 'Provide correct api key!')
 
 
 class TrackConnectionEP(Resource):
     # get track with given id
     @marshal_with(trackConnectionFields)
     def get(self, track_connection_id):
-        trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
-        return trackConnection
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
+            return trackConnection
+        else:
+            return abort(400, 'Provide correct api key!')
 
     # update track with given id
     @marshal_with(trackConnectionFields)
     def put(self, track_connection_id):
-        data = request.json
-        trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
-        trackConnection.track_id = data['track_id']
-        trackConnection.playlist_id = data['playlist_id']
-        db.session.commit()
-        return trackConnection
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            data = request.json
+            trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
+            trackConnection.track_id = data['track_id']
+            trackConnection.playlist_id = data['playlist_id']
+            db.session.commit()
+            return trackConnection
+        else:
+            return abort(400, 'Provide correct api key!')
 
     # delete track with given id
     @marshal_with(trackConnectionFields)
     def delete(self, track_connection_id):
-        trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
-        db.session.delete(trackConnection)
-        db.session.commit()
-        return trackConnection
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
+            db.session.delete(trackConnection)
+            db.session.commit()
+            return trackConnection
+        else:
+            return abort(400, 'Provide correct api key!')
 
 
 class TracksInPlaylistEP(Resource):
     @marshal_with(trackConnectionFields)
     def get(self, playlist_id):
-        tracks_in_playlist = TrackConnection.query.filter_by(playlist_id=playlist_id).all()
-        return tracks_in_playlist
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            tracks_in_playlist = TrackConnection.query.filter_by(playlist_id=playlist_id).all()
+            return tracks_in_playlist
+        else:
+            return abort(400, 'Provide correct api key!')
 
 
 # endpoints
