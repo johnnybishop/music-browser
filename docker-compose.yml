@@ -1,0 +1,25 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge 
+
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      - POSTGRES_HOST=localhost
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=music-browser
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - customer_data:/var/lib/postgresql/data/ 
+    networks:
+      - dev
+
+volumes:
+  customer_data:
