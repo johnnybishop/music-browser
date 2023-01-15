@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api, marshal_with, fields
 from flask_sqlalchemy import SQLAlchemy
 from flask import abort
+from datetime import datetime
 
 playlistsService = Flask(__name__)
 api = Api(playlistsService)
@@ -22,6 +23,8 @@ def init():
 class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    createdAt = db.Column(db.String, nullable=False)
     trackConnection = db.relationship('TrackConnection',
                                       backref='trackConnection',
                                       lazy=True,
@@ -39,6 +42,8 @@ class TrackConnection(db.Model):
 playlistFields = {
     'id': fields.Integer,
     'title': fields.String,
+    'description': fields.String,
+    'createdAt': fields.String
 }
 
 trackConnectionFields = {
@@ -67,10 +72,15 @@ class PlaylistsEP(Resource):
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             data = request.json
-            playlist = Playlist(title=data['title'])
-            db.session.add(playlist)
-            db.session.commit()
-            return playlist
+            if ('title' in data) & ('description' in data):
+                playlist = Playlist(title=data['title'],
+                                    description=data['description'],
+                                    createdAt=str(datetime.now())[:-7])
+                db.session.add(playlist)
+                db.session.commit()
+                return playlist
+            else:
+                return abort(400, 'Received JSON data is incorrect!')
         else:
             return abort(400, 'Provide correct api key!')
 
@@ -83,7 +93,10 @@ class PlaylistEP(Resource):
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             playlist = Playlist.query.filter_by(id=playlist_id).first()
-            return playlist
+            if playlist:
+                return playlist
+            else:
+                return abort(400, f'Playlist with id {playlist_id} does not exist!')
         else:
             return abort(400, 'Provide correct api key!')
 
@@ -94,10 +107,17 @@ class PlaylistEP(Resource):
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             data = request.json
-            playlist = Playlist.query.filter_by(id=playlist_id).first()
-            playlist.title = data['title']
-            db.session.commit()
-            return playlist
+            if ('title' in data) & ('description' in data):
+                playlist = Playlist.query.filter_by(id=playlist_id).first()
+                if playlist:
+                    playlist.title = data['title']
+                    playlist.description = data['description']
+                    db.session.commit()
+                    return playlist
+                else:
+                    return abort(400, f'Playlist with id {playlist_id} does not exist!')
+            else:
+                return abort(400, 'Received JSON data is incorrect!')
         else:
             return abort(400, 'Provide correct api key!')
 
@@ -108,9 +128,12 @@ class PlaylistEP(Resource):
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             playlist = Playlist.query.filter_by(id=playlist_id).first()
-            db.session.delete(playlist)
-            db.session.commit()
-            return playlist
+            if playlist:
+                db.session.delete(playlist)
+                db.session.commit()
+                return playlist
+            else:
+                return abort(400, f'Playlist with id {playlist_id} does not exist!')
         else:
             return abort(400, 'Provide correct api key!')
 
@@ -134,11 +157,14 @@ class TrackConnectionsEP(Resource):
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             data = request.json
-            trackConnection = TrackConnection(track_id=data['track_id'],
-                                              playlist_id=data['playlist_id'])
-            db.session.add(trackConnection)
-            db.session.commit()
-            return trackConnection
+            if ('track_id' in data) & ('playlist_id' in data):
+                trackConnection = TrackConnection(track_id=data['track_id'],
+                                                  playlist_id=data['playlist_id'])
+                db.session.add(trackConnection)
+                db.session.commit()
+                return trackConnection
+            else:
+                return abort(400, 'Received JSON data is incorrect!')
         else:
             return abort(400, 'Provide correct api key!')
 
@@ -151,7 +177,10 @@ class TrackConnectionEP(Resource):
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
-            return trackConnection
+            if trackConnection:
+                return trackConnection
+            else:
+                return abort(400, f'Track connection with id {track_connection_id} does not exist!')
         else:
             return abort(400, 'Provide correct api key!')
 
@@ -162,11 +191,17 @@ class TrackConnectionEP(Resource):
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             data = request.json
-            trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
-            trackConnection.track_id = data['track_id']
-            trackConnection.playlist_id = data['playlist_id']
-            db.session.commit()
-            return trackConnection
+            if ('track_id' in data) & ('playlist_id' in data):
+                trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
+                if trackConnection:
+                    trackConnection.track_id = data['track_id']
+                    trackConnection.playlist_id = data['playlist_id']
+                    db.session.commit()
+                    return trackConnection
+                else:
+                    return abort(400, f'Track connection with id {track_connection_id} does not exist!')
+            else:
+                return abort(400, 'Received JSON data is incorrect!')
         else:
             return abort(400, 'Provide correct api key!')
 
@@ -177,9 +212,12 @@ class TrackConnectionEP(Resource):
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             trackConnection = TrackConnection.query.filter_by(id=track_connection_id).first()
-            db.session.delete(trackConnection)
-            db.session.commit()
-            return trackConnection
+            if trackConnection:
+                db.session.delete(trackConnection)
+                db.session.commit()
+                return trackConnection
+            else:
+                return abort(400, f'Track connection with id {track_connection_id} does not exist!')
         else:
             return abort(400, 'Provide correct api key!')
 
@@ -190,8 +228,11 @@ class TracksInPlaylistEP(Resource):
         headers = request.headers
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
-            tracks_in_playlist = TrackConnection.query.filter_by(playlist_id=playlist_id).all()
-            return tracks_in_playlist
+            if Playlist.query.filter_by(id=playlist_id).first():
+                tracks_in_playlist = TrackConnection.query.filter_by(playlist_id=playlist_id).all()
+                return tracks_in_playlist
+            else:
+                return abort(400, f'Playlist with id {playlist_id} does not exist!')
         else:
             return abort(400, 'Provide correct api key!')
 
