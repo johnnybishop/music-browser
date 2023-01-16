@@ -12,6 +12,21 @@
 				{
 					"name": "Get all tracks",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -34,6 +49,21 @@
 				{
 					"name": "Get track",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -57,6 +87,21 @@
 				{
 					"name": "Add new track",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -88,6 +133,21 @@
 				{
 					"name": "Update track",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -100,7 +160,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/track/1",
+							"raw": "http://127.0.0.1:5000/track/10",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -111,7 +171,7 @@
 							"port": "5000",
 							"path": [
 								"track",
-								"1"
+								"10"
 							]
 						}
 					},
@@ -120,6 +180,21 @@
 				{
 					"name": "Delete track",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -132,7 +207,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/track/2",
+							"raw": "http://127.0.0.1:5000/track/4",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -143,7 +218,7 @@
 							"port": "5000",
 							"path": [
 								"track",
-								"2"
+								"4"
 							]
 						}
 					},
@@ -157,6 +232,21 @@
 				{
 					"name": "Get all playlists",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -179,6 +269,21 @@
 				{
 					"name": "Get playlist",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -202,11 +307,26 @@
 				{
 					"name": "Add new playlist",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"myPlaylist2\"\n}",
+							"raw": "{\n    \"title\": \"myPlaylist2\",\n    \"description\": \"this is my description\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -233,6 +353,21 @@
 				{
 					"name": "Update playlist",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -265,6 +400,21 @@
 				{
 					"name": "Delete playlist",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -302,6 +452,21 @@
 				{
 					"name": "Get all track connections",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -324,6 +489,21 @@
 				{
 					"name": "Get all tracks in playlist",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -350,6 +530,21 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -382,11 +577,26 @@
 				{
 					"name": "Add new track connection",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"track_id\": 12,\n    \"playlist_id\": 2\n}",
+							"raw": "{\n    \"track_id\": 3,\n    \"playlist_id\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -413,6 +623,21 @@
 				{
 					"name": "Update track connection",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -445,6 +670,21 @@
 				{
 					"name": "Delete track connection",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "6327cc80-3093-4beb-90ee-191d69076366",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -457,7 +697,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5001/track_connection/1",
+							"raw": "http://127.0.0.1:5001/track_connection/4",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -468,7 +708,7 @@
 							"port": "5001",
 							"path": [
 								"track_connection",
-								"1"
+								"4"
 							]
 						}
 					},
