@@ -1,12 +1,11 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { playlistRoute } from './routes/playlist.routes';
+import { trackRoute } from './routes/track.routes';
 
 const app = express();
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('Express + TypeScript Server 2');
-});
-
+app.use(express.json());
 app.use('/api/playlists', playlistRoute);
+app.use('/api/tracks', trackRoute);
+
 
 export default app;

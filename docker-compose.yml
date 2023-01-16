@@ -17,9 +17,9 @@ services:
       - "5432:5432"
     restart: always
     volumes:
-      - customer_data:/var/lib/postgresql/data/ 
+      - db_data:/var/lib/postgresql/data/ 
     networks:
       - dev
 
 volumes:
-  customer_data:
+  db_data:

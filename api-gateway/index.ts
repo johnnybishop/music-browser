@@ -1,8 +1,7 @@
-import assert from 'assert';
-import dotenv from 'dotenv'
-import app from './app'
+require('dotenv').config();
 
-dotenv.config();
+import assert from 'assert';
+import app from './app';
 
 const PORT = process.env.API_GATEWAY_PORT;
 const HOST = process.env.API_GATEWAY_HOST ;
