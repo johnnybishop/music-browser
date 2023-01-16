@@ -238,9 +238,9 @@ class TracksInPlaylistEP(Resource):
 
 
 # endpoints
-api.add_resource(PlaylistsEP, '/playlists')
+api.add_resource(PlaylistsEP, '/playlist')
 api.add_resource(PlaylistEP, '/playlist/<int:playlist_id>')
-api.add_resource(TrackConnectionsEP, '/track_connections')
+api.add_resource(TrackConnectionsEP, '/track_connection')
 api.add_resource(TrackConnectionEP, '/track_connection/<int:track_connection_id>')
 api.add_resource(TracksInPlaylistEP, '/tracks_in_playlist/<int:playlist_id>')
 

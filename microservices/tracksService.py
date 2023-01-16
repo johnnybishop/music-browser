@@ -126,7 +126,7 @@ class TrackEP(Resource):
             return abort(400, 'Provide correct api key!')
 
 
-api.add_resource(TracksEP, '/tracks')
+api.add_resource(TracksEP, '/track')
 api.add_resource(TrackEP, '/track/<int:track_id>')
 
 if __name__ == '__main__':
