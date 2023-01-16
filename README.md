@@ -16,6 +16,9 @@ docker-compose up -d
   npm i
 # copy environment file
   cp .env.example .env
+```
+Set value of API_KEY environment variable.
+```bash
 # development mode
   npm run dev 
 ```
