@@ -1,6 +1,6 @@
 # music-browser
 
-## prequitites
+## prerequisites
 - docker desktop
 - python
 - node js
