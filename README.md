@@ -32,6 +32,7 @@ Set value of API_KEY environment variable.
   venv\Scripts\activate
 # install dependencies for python services
   pip install flask
+  pip install flask_api
   pip install flask_restful
   pip install flask_sqlalchemy
   pip install psycopg2-binary

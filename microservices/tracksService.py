@@ -1,8 +1,9 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restful import Resource, Api, marshal_with, fields
 from flask_sqlalchemy import SQLAlchemy
 from flask import abort
 from datetime import datetime
+from flask_api import status
 
 tracksService = Flask(__name__)
 api = Api(tracksService)
@@ -49,10 +50,10 @@ class TracksEP(Resource):
             all_tracks = Track.query.all()
             return all_tracks
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
     # add new track
-    @marshal_with(trackFields)
     def post(self):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -65,11 +66,13 @@ class TracksEP(Resource):
                               createdAt=str(datetime.now())[:-7])
                 db.session.add(track)
                 db.session.commit()
-                return track
+                return status.HTTP_200_OK
             else:
-                return abort(400, 'Received JSON data is incorrect!')
+                return abort(jsonify(message='Received JSON data is incorrect',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
 
 class TrackEP(Resource):
@@ -83,12 +86,13 @@ class TrackEP(Resource):
             if track:
                 return track
             else:
-                return abort(400, f'Track with id {track_id} does not exist!')
+                return abort(jsonify(message=f'Track with id {track_id} does not exist!',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
     # update track with given id
-    @marshal_with(trackFields)
     def put(self, track_id):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -101,16 +105,18 @@ class TrackEP(Resource):
                     track.author = data['author']
                     track.track_url = data['track_url']
                     db.session.commit()
-                    return track
+                    return status.HTTP_200_OK
                 else:
-                    return abort(400, f'Track with id {track_id} does not exist!')
+                    return abort(jsonify(message=f'Track with id {track_id} does not exist!',
+                                         error_code=404))
             else:
-                return abort(400, 'Received JSON data is incorrect!')
+                return abort(jsonify(message='Received JSON data is incorrect',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
     # delete track with given id
-    @marshal_with(trackFields)
     def delete(self, track_id):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -119,11 +125,13 @@ class TrackEP(Resource):
             if track:
                 db.session.delete(track)
                 db.session.commit()
-                return track
+                return status.HTTP_200_OK
             else:
-                return abort(400, f'Track with id {track_id} does not exist!')
+                return abort(jsonify(message=f'Track with id {track_id} does not exist!',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
 
 api.add_resource(TracksEP, '/track')

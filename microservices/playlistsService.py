@@ -1,8 +1,9 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restful import Resource, Api, marshal_with, fields
 from flask_sqlalchemy import SQLAlchemy
 from flask import abort
 from datetime import datetime
+from flask_api import status
 
 playlistsService = Flask(__name__)
 api = Api(playlistsService)
@@ -43,7 +44,8 @@ playlistFields = {
     'id': fields.Integer,
     'title': fields.String,
     'description': fields.String,
-    'createdAt': fields.String
+    'createdAt': fields.String,
+    'track_ids': fields.List(fields.Integer)
 }
 
 trackConnectionFields = {
@@ -61,12 +63,22 @@ class PlaylistsEP(Resource):
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             playlists = Playlist.query.all()
-            return playlists
+            extended_playlists = []
+            for playlist in playlists:
+                playlist = dict(playlist.__dict__)
+                del playlist['_sa_instance_state']
+                tracks_in_playlist = TrackConnection.query.filter_by(playlist_id=playlist['id']).all()
+                track_ids = []
+                for track in tracks_in_playlist:
+                    track_ids.append(track.track_id)
+                playlist['track_ids'] = track_ids
+                extended_playlists.append(playlist)
+            return extended_playlists
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
     # add new playlists
-    @marshal_with(playlistFields)
     def post(self):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -78,11 +90,13 @@ class PlaylistsEP(Resource):
                                     createdAt=str(datetime.now())[:-7])
                 db.session.add(playlist)
                 db.session.commit()
-                return playlist
+                return status.HTTP_200_OK
             else:
-                return abort(400, 'Received JSON data is incorrect!')
+                return abort(jsonify(message='Received JSON data is incorrect',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
 
 class PlaylistEP(Resource):
@@ -94,14 +108,22 @@ class PlaylistEP(Resource):
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
             playlist = Playlist.query.filter_by(id=playlist_id).first()
             if playlist:
+                playlist = dict(playlist.__dict__)
+                del playlist['_sa_instance_state']
+                tracks_in_playlist = TrackConnection.query.filter_by(playlist_id=playlist_id).all()
+                track_ids = []
+                for track in tracks_in_playlist:
+                    track_ids.append(track.track_id)
+                playlist['track_ids'] = track_ids
                 return playlist
             else:
-                return abort(400, f'Playlist with id {playlist_id} does not exist!')
+                return abort(jsonify(message=f'Playlist with id {playlist_id} does not exist!',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
     # update track with given id
-    @marshal_with(playlistFields)
     def put(self, playlist_id):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -113,16 +135,18 @@ class PlaylistEP(Resource):
                     playlist.title = data['title']
                     playlist.description = data['description']
                     db.session.commit()
-                    return playlist
+                    return status.HTTP_200_OK
                 else:
-                    return abort(400, f'Playlist with id {playlist_id} does not exist!')
+                    return abort(jsonify(message=f'Playlist with id {playlist_id} does not exist!',
+                                         error_code=404))
             else:
-                return abort(400, 'Received JSON data is incorrect!')
+                return abort(jsonify(message='Received JSON data is incorrect',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
     # delete track with given id
-    @marshal_with(playlistFields)
     def delete(self, playlist_id):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -131,11 +155,13 @@ class PlaylistEP(Resource):
             if playlist:
                 db.session.delete(playlist)
                 db.session.commit()
-                return playlist
+                return status.HTTP_200_OK
             else:
-                return abort(400, f'Playlist with id {playlist_id} does not exist!')
+                return abort(jsonify(message=f'Playlist with id {playlist_id} does not exist!',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
 
 class TrackConnectionsEP(Resource):
@@ -148,10 +174,10 @@ class TrackConnectionsEP(Resource):
             trackConnections = TrackConnection.query.all()
             return trackConnections
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
     # add new playlists
-    @marshal_with(trackConnectionFields)
     def post(self):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -162,11 +188,13 @@ class TrackConnectionsEP(Resource):
                                                   playlist_id=data['playlist_id'])
                 db.session.add(trackConnection)
                 db.session.commit()
-                return trackConnection
+                return status.HTTP_200_OK
             else:
-                return abort(400, 'Received JSON data is incorrect!')
+                return abort(jsonify(message='Received JSON data is incorrect',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
 
 class TrackConnectionEP(Resource):
@@ -180,12 +208,13 @@ class TrackConnectionEP(Resource):
             if trackConnection:
                 return trackConnection
             else:
-                return abort(400, f'Track connection with id {track_connection_id} does not exist!')
+                return abort(jsonify(message=f'Track connection with id {track_connection_id} does not exist!',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
     # update track with given id
-    @marshal_with(trackConnectionFields)
     def put(self, track_connection_id):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -197,16 +226,18 @@ class TrackConnectionEP(Resource):
                     trackConnection.track_id = data['track_id']
                     trackConnection.playlist_id = data['playlist_id']
                     db.session.commit()
-                    return trackConnection
+                    return status.HTTP_200_OK
                 else:
-                    return abort(400, f'Track connection with id {track_connection_id} does not exist!')
+                    return abort(jsonify(message=f'Track connection with id {track_connection_id} does not exist!',
+                                         error_code=404))
             else:
-                return abort(400, 'Received JSON data is incorrect!')
+                return abort(jsonify(message='Received JSON data is incorrect',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
     # delete track with given id
-    @marshal_with(trackConnectionFields)
     def delete(self, track_connection_id):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -215,11 +246,13 @@ class TrackConnectionEP(Resource):
             if trackConnection:
                 db.session.delete(trackConnection)
                 db.session.commit()
-                return trackConnection
+                return status.HTTP_200_OK
             else:
-                return abort(400, f'Track connection with id {track_connection_id} does not exist!')
+                return abort(jsonify(message=f'Track connection with id {track_connection_id} does not exist!',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
 
 class TracksInPlaylistEP(Resource):
@@ -232,9 +265,11 @@ class TracksInPlaylistEP(Resource):
                 tracks_in_playlist = TrackConnection.query.filter_by(playlist_id=playlist_id).all()
                 return tracks_in_playlist
             else:
-                return abort(400, f'Playlist with id {playlist_id} does not exist!')
+                return abort(jsonify(message=f'Playlist with id {playlist_id} does not exist!',
+                                     error_code=404))
         else:
-            return abort(400, 'Provide correct api key!')
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
 
 # endpoints
