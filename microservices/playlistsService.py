@@ -5,6 +5,7 @@ from flask import abort
 from datetime import datetime
 from flask_api import status
 
+
 playlistsService = Flask(__name__)
 api = Api(playlistsService)
 playlistsService.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/music-browser'
@@ -30,6 +31,13 @@ class Playlist(db.Model):
                                       backref='trackConnection',
                                       lazy=True,
                                       cascade="delete, merge, save-update")
+
+class Track(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    author = db.Column(db.String, nullable=False)
+    track_url = db.Column(db.String, nullable=False)
+    createdAt = db.Column(db.String, nullable=False)
 
 
 # db model of connection between playlist and tracks
@@ -57,7 +65,6 @@ trackConnectionFields = {
 
 class PlaylistsEP(Resource):
     # get all playlists
-    @marshal_with(playlistFields)
     def get(self):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -68,10 +75,14 @@ class PlaylistsEP(Resource):
                 playlist = dict(playlist.__dict__)
                 del playlist['_sa_instance_state']
                 tracks_in_playlist = TrackConnection.query.filter_by(playlist_id=playlist['id']).all()
-                track_ids = []
-                for track in tracks_in_playlist:
-                    track_ids.append(track.track_id)
-                playlist['track_ids'] = track_ids
+                tracks = []
+                for track_in_playlist in tracks_in_playlist:
+                    track_id = track_in_playlist.id
+                    track = Track.query.filter_by(id=track_id).first()
+                    track = dict(track.__dict__)
+                    del track['_sa_instance_state']
+                    tracks.append(track)
+                playlist['tracks'] = tracks
                 extended_playlists.append(playlist)
             return extended_playlists
         else:
@@ -101,7 +112,6 @@ class PlaylistsEP(Resource):
 
 class PlaylistEP(Resource):
     # get playlist with given id
-    @marshal_with(playlistFields)
     def get(self, playlist_id):
         headers = request.headers
         auth = headers.get("apiKey")
@@ -111,10 +121,14 @@ class PlaylistEP(Resource):
                 playlist = dict(playlist.__dict__)
                 del playlist['_sa_instance_state']
                 tracks_in_playlist = TrackConnection.query.filter_by(playlist_id=playlist_id).all()
-                track_ids = []
-                for track in tracks_in_playlist:
-                    track_ids.append(track.track_id)
-                playlist['track_ids'] = track_ids
+                tracks = []
+                for track_in_playlist in tracks_in_playlist:
+                    track_id = track_in_playlist.id
+                    track = Track.query.filter_by(id=track_id).first()
+                    track = dict(track.__dict__)
+                    del track['_sa_instance_state']
+                    tracks.append(track)
+                playlist['tracks'] = tracks
                 return playlist
             else:
                 return abort(jsonify(message=f'Playlist with id {playlist_id} does not exist!',
