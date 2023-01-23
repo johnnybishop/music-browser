@@ -17,8 +17,9 @@ assert(PORT, "Missing TRACKS_SERVICE_PORT Env Variable");
 const BASE_URL  = 'track';
 
 trackRoute.get("/", async (req: Request, res: Response) => {
+    console.log()
     try {
-        const response = await apiClient.performRequest(HOST, +PORT, BASE_URL, HttpMethodEnum.GET);
+        const response = await apiClient.performRequest(HOST, +PORT, BASE_URL, HttpMethodEnum.GET, undefined, req.query['page'] as string);
         res.json(response.data);
     } catch (err) {
         handleErrorResponse(err, res);
@@ -71,3 +72,12 @@ trackRoute.delete("/:trackId", async (req: Request, res: Response) => {
     }
 });
 
+
+trackRoute.get("/count", async (req: Request, res: Response) => {
+    try {
+        const response = await apiClient.performRequest(HOST, +PORT, BASE_URL, HttpMethodEnum.GET);
+        res.json(response.data);
+    } catch (err) {
+        handleErrorResponse(err, res);
+    }
+});

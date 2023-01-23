@@ -47,8 +47,11 @@ class TracksEP(Resource):
         headers = request.headers
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
-            all_tracks = Track.query.all()
-            return all_tracks
+            args = request.args
+            print(args.get("page", type=str))
+            limit = 10
+            all_tracks = Track.query.paginate(page=int(args.get("page")), per_page=limit)
+            return all_tracks.items
         else:
             return abort(jsonify(message='Provide correct api key!',
                                  error_code=404))
@@ -74,6 +77,17 @@ class TracksEP(Resource):
             return abort(jsonify(message='Provide correct api key!',
                                  error_code=404))
 
+class TrackCount(Resource):
+  # get tracks count
+    def get(self):
+        headers = request.headers
+        auth = headers.get("apiKey")
+        if auth == '6327cc80-3093-4beb-90ee-191d69076366':
+            count = Track.query.count()
+            return count
+        else:
+            return abort(jsonify(message='Provide correct api key!',
+                                 error_code=404))
 
 class TrackEP(Resource):
     # get track with given id
@@ -136,6 +150,7 @@ class TrackEP(Resource):
 
 api.add_resource(TracksEP, '/track')
 api.add_resource(TrackEP, '/track/<int:track_id>')
+api.add_resource(TrackCount, '/track/count')
 
 if __name__ == '__main__':
     tracksService.run(host="localhost", port=5000, debug=True)

@@ -14,7 +14,7 @@ assert(HOST, "Missing PLAYLISTS_SERVICE_HOST Env Variable");
 const PORT = process.env.PLAYLISTS_SERVICE_PORT;
 assert(PORT, "Missing PLAYLISTS_SERVICE_PORT Env Variable");
 
-const BASE_URL  = 'playlists';
+const BASE_URL  = 'playlist';
 
 playlistRoute.get("/", async (req: Request, res: Response) => {
     try {

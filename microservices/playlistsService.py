@@ -69,7 +69,7 @@ class PlaylistsEP(Resource):
         headers = request.headers
         auth = headers.get("apiKey")
         if auth == '6327cc80-3093-4beb-90ee-191d69076366':
-            playlists = Playlist.query.all()
+            playlists = Playlist.query.order_by(Playlist.createdAt.desc()).all()
             extended_playlists = []
             for playlist in playlists:
                 playlist = dict(playlist.__dict__)
@@ -101,7 +101,7 @@ class PlaylistsEP(Resource):
                                     createdAt=str(datetime.now())[:-7])
                 db.session.add(playlist)
                 db.session.commit()
-                return status.HTTP_200_OK
+                return playlist.id
             else:
                 return abort(jsonify(message='Received JSON data is incorrect',
                                      error_code=404))
