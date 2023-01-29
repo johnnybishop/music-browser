@@ -1,7 +1,7 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
   <div class="browser">
-
+  
     <div v-if="searchVisible" class="card-container">
       <Header />
       <form v-on:submit.prevent="fetchData">
@@ -14,6 +14,8 @@
       </form>
       <Playlists @select-playlist="setSelectedPlaylist" :playlists="playlists" />
     </div>
+
+
 
     <div v-if="selectedPlaylist" class="card-container">
       <Preview :playlistId="selectedPlaylist.id" @close-preview="setSelectedPlaylist" @edit-completed="fetchData"/>
@@ -52,6 +54,7 @@ export default {
   async created() {
     await this.fetchData();
   },
+
   methods: {
     async fetchData() {
       const API_URL = 'https://localhost:49157/api/PlaylistApi/GetPlaylists';

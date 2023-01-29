@@ -25,13 +25,19 @@
 
   </div>
 
+  <Adsense style="width:90%; border:1px solid red; margin-left:auto; margin-right:auto;"
+    data-ad-client="pub-7638834271607675"
+    data-adtest="on">
+    </Adsense>
+
 </template>
 
 <script>
 import Header from './components/Header.vue';
 import Playlists from './components/Playlists.vue';
 import Preview from './components/Preview.vue';
-import AddPlaylist from './components/AddPlaylist.vue'
+import AddPlaylist from './components/AddPlaylist.vue';
+import Adsense from 'vue-google-adsense/dist/Adsense.min.js'
 
 export default {
 
@@ -52,6 +58,7 @@ export default {
   async created() {
     await this.fetchData();
   },
+
   methods: {
     async fetchData() {
       const API_URL = 'http://localhost:8080/api/playlists';
