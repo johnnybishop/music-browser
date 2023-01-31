@@ -14,7 +14,7 @@
     <form v-on:submit.prevent="savePlaylist">
         <input type="text" v-model="playlist.name" placeholder="Insert playlist name..." />
         <input type="text" v-model="playlist.description" placeholder="Insert playlist description..." />
-        <Tracks :state="playlist" @track-added="addTrack" @track-removed="removeTrack" />
+        <!-- <Tracks :state="playlist" @track-added="addTrack" @track-removed="removeTrack" /> -->
         <div class="button-container">
             <button class="btn" type="submit">Save</button>
         </div>
@@ -57,18 +57,15 @@ export default {
             this.tracksId = filtered;
         },
         async savePlaylist() {
-            const API_URL = `https://localhost:49157/api/PlaylistApi/UpdatePlaylist/${this.playlist.id}`;
+            const API_URL =`http://localhost:8080/api/playlists/${this.playlist.id}`;
             const tracksId = this.playlist.tracks.map((track) => track.id);
             const requestOptions = {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(
                     {
-                        id: this.playlist.id,
-                        name: this.playlist.name,
+                        title: this.playlist.name,
                         description: this.playlist.description,
-                        createdAt: this.playlist.createdAt,
-                        tracksId: this.tracksId
                     }
                 )
             };
@@ -81,6 +78,7 @@ export default {
                     return response.json()
                 })
                 .then((data) => {
+                    console.log(data);
                     this.validationErrors = [];
                     if (data.errors) {
                         Object.values(data.errors).forEach((value) => {
@@ -89,6 +87,20 @@ export default {
 
                         throw new Error("Validation errors have occured");
                     }
+
+                    tracksId.forEach(async(trackId) => {
+                        const requestOptions = {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(
+                                {
+                                    track_id: trackId,
+                                    playlist_id: this.playlist.id,
+                                }
+                            )
+                        };
+                        await fetch(`http://localhost:8080/api/track-connections`, requestOptions)
+                    })
                 })
                 .then(() => {
                     this.$emit('playlist-updated');

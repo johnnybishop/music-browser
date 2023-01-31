@@ -1,5 +1,10 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+  
+  <Adsense style="width:90%; margin-top: 10px; border:1px solid red; margin-left:auto; margin-right:auto;"
+    data-ad-client="pub-7638834271607675"
+    data-adtest="on">
+    </Adsense>
   <div class="browser">
 
     <div v-if="searchVisible" class="card-container">
@@ -25,10 +30,6 @@
 
   </div>
 
-  <Adsense style="width:90%; border:1px solid red; margin-left:auto; margin-right:auto;"
-    data-ad-client="pub-7638834271607675"
-    data-adtest="on">
-    </Adsense>
 
 </template>
 
@@ -66,7 +67,7 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           if (this.query && this.query.length > 0) {
-            this.playlists = data.responseData.filter((playlist) => playlist.title.includes(this.query));
+            this.playlists = data.filter((playlist) => playlist.title.includes(this.query));
 
             return;
           }

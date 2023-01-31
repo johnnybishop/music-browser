@@ -40,6 +40,9 @@ export default {
         validationErrors: [],
         tracksId: [],
     }),
+    async created() {
+        this.validationErrors = []
+    },
     emits: ['close-add', 'playlist-added'],
     methods: {
         async addTrack(trackId) {
@@ -52,6 +55,23 @@ export default {
             this.tracksId = filtered;
         },
         async addPlaylist() {
+            if (!this.name) {
+                this.validationErrors.push('Name must be filled!')
+
+                return;
+            } else {
+                this.validationErrors = [];
+            }
+
+            if (!this.description) {
+                this.validationErrors.push('Description must be filled!')
+
+                return
+            } else {
+                this.validationErrors = [];
+
+            }
+        
             const API_URL = `http://localhost:8080/api/playlists/`;
             const requestOptions = {
                 method: "POST",

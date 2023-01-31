@@ -5,12 +5,12 @@
             <div class="playlist-title">
                 <h1>Playlist details</h1>
             </div>
-            <span @click="this.editVisible = true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            <!-- <span @click="this.editVisible = true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                     fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                     <path
                         d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
                 </svg>
-            </span>
+            </span> -->
             <span @click="$emit('close-preview', null)">&#10060;</span>
         </div>
 
@@ -32,14 +32,19 @@
                     <dt>Tracks</dt>
                     <dd v-for="track in playlistData?.tracks.slice(0, 10)">
                         <div style="font-weight: bold">
-                            &#9835; {{ track.name }}
+                            &#9835; {{ track.title }}
                         </div>
                         <div>
                             <svg style="margin-top:5px; margin-bottom: -2px; margin-right: -2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-person-fill" viewBox="0 0 16 16">
                                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                             </svg>
-                            {{ track.artist }}
+                            {{ track.author }}
+                        </div>
+                        <div>
+                            <span style="margin-left: 20px" >
+                                <a v-bind:href="track.track_url" target="_blank">Listen on youtube</a>
+                            </span>
                         </div>
 
                     </dd>
@@ -65,10 +70,10 @@
         </div>
     </div>
 
-    <div v-if="editVisible">
+    <!-- <div v-if="editVisible">
         <EditPlaylist :playlist="playlistData" @close-edit="this.editVisible = false"
             @playlist-updated="afterUpdated" />
-    </div>
+    </div> -->
 
 </template>
 

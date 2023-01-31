@@ -1,15 +1,38 @@
 # music-browser
 
+Music browser is application created for browsing your personal music library. It was build with Python, Node JS and Vue JS. Backend was designed in microservices architecure with Docker support.
+
 ## prerequisites
 - docker desktop
 - python
 - node js
 
-## run database
-```bash
-docker-compose up -d
+## Run backend microservices
+```bash 
+# build api-gateway image
+cd api-gateway
+docker build . -t api_gateway
+
+# build tracks service image 
+cd ../microservices/tracks
+docker build -t tracks_service .
+
+# build playlists service image
+cd ../playlists
+docker image build -t playlists_service .
+
+# run backend app
+docker compose up -d
 ```
 
+## Run frontend application
+``` bash
+cd client
+npm install
+npm run serve
+```
+
+# Local development
 ## run api gateway
 ```bash
 # install dependencies
@@ -41,3 +64,5 @@ Set value of API_KEY environment variable.
   python microservices/playlistsService.py
 ```
 	
+
+

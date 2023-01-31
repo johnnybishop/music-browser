@@ -17,7 +17,6 @@ assert(PORT, "Missing TRACKS_SERVICE_PORT Env Variable");
 const BASE_URL  = 'track';
 
 trackRoute.get("/", async (req: Request, res: Response) => {
-    console.log()
     try {
         const response = await apiClient.performRequest(HOST, +PORT, BASE_URL, HttpMethodEnum.GET, undefined, req.query['page'] as string);
         res.json(response.data);

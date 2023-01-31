@@ -1,8 +1,8 @@
 <template>
     <div class="playlist" @click="onClick(playlist.id)">
         <h3>{{ playlist.title }}</h3>
-        <p>{{ playlist.createdAt }}</p>
-
+        <p>{{ playlist.createdAt }} </p>
+        <!-- <div style="display:flex; justify-content:space-between; border: none; border-radius: 4px"><button style="background-color: red">Delete</button></div> -->
     </div>
 </template>
 
@@ -30,5 +30,5 @@ export default {
     padding: 10px 20px;
     cursor: pointer;
 }
-
+/*  */
 </style>

@@ -8,7 +8,7 @@ from flask_api import status
 
 playlistsService = Flask(__name__)
 api = Api(playlistsService)
-playlistsService.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/music-browser'
+playlistsService.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@db:5432/music-browser'
 playlistsService.config['SECRET_KEY'] = 'secretkey'
 db = SQLAlchemy(playlistsService)
 
@@ -294,4 +294,8 @@ api.add_resource(TrackConnectionEP, '/track_connection/<int:track_connection_id>
 api.add_resource(TracksInPlaylistEP, '/tracks_in_playlist/<int:playlist_id>')
 
 if __name__ == '__main__':
-    playlistsService.run(host="localhost", port=5001, debug=True)
+    # setup for local develpoment
+    # playlistsService.run(host="localhost", port=5001, debug=True)
+    
+    # setup for docker deployment
+    playlistsService.run(host="0.0.0.0", port=5001, debug=True)

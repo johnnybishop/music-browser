@@ -5,9 +5,33 @@ networks:
     driver: bridge 
 
 services:
+  api:
+    container_name: api-gateway
+    image: api_gateway
+    networks:
+      - dev
+    ports:
+      - "8080:8080"
+
+  tracks:
+    container_name: tracks
+    image: tracks_service
+    networks:
+      - dev
+    ports:
+      - "5000:5000"
+
+  playlists:
+    container_name: playlists
+    image: playlists_service
+    networks:
+      - dev
+    ports:
+      - "5001:5001"
+
   db:
-    image: postgres:latest
     container_name: db
+    image: postgres:latest
     environment:
       - POSTGRES_HOST=localhost
       - POSTGRES_USER=postgres

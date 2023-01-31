@@ -8,7 +8,7 @@ from flask_api import status
 tracksService = Flask(__name__)
 api = Api(tracksService)
 
-tracksService.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/music-browser'
+tracksService.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@db:5432/music-browser'
 tracksService.config['SECRET_KEY'] = 'secretkey'
 db = SQLAlchemy(tracksService)
 
@@ -153,4 +153,8 @@ api.add_resource(TrackEP, '/track/<int:track_id>')
 api.add_resource(TrackCount, '/track/count')
 
 if __name__ == '__main__':
-    tracksService.run(host="localhost", port=5000, debug=True)
+    # setup for local development
+    # tracksService.run(host="localhost", port=5000, debug=True)
+
+    # setup for docker deployment
+    tracksService.run(host="0.0.0.0", port=5000, debug=True)
